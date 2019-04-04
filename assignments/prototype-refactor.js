@@ -8,30 +8,24 @@ Prototype Refactor
 
 */
 
-/*
-  Object oriented design is commonly used in video games.  For this part of the assignment you will be implementing several constructor functions with their correct inheritance hierarchy.
 
-  In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.  
-
-  At the bottom of this file are 3 objects that all end up inheriting from Humanoid.  Use the objects at the bottom of the page to test your constructor functions.
-  
-  Each constructor function has unique properties and methods that are defined in their block comments below:
-*/
-
-/*
-  === GameObject ===
-  * createdAt
-  * name
-  * dimensions (These represent the character's size in the video game)
-  * destroy() // prototype method that returns: `${this.name} was removed from the game.`
-*/
-function GameObject(attributes) {
-  this.createdAt = attributes.createdAt;
-  this.name = attributes.name;
-  this.dimensions = attributes.dimensions;
-}
-GameObject.prototype.destroy = function () {
-  return `${this.name} was removed from the game.`
+// function GameObject(attributes) {
+//   this.createdAt = attributes.createdAt;
+//   this.name = attributes.name;
+//   this.dimensions = attributes.dimensions;
+// }
+// GameObject.prototype.destroy = function () {
+//   return `${this.name} was removed from the game.`
+// }
+class GameObject {
+  constructor(props) {
+    this.createdAt = props.createdAt;
+    this.name = props.name;
+    this.dimensions = props.dimensions
+  }
+  destroy() {
+    return `${this.name} was removed from the game.`
+  }
 }
 /*
   === CharacterStats ===
@@ -39,16 +33,23 @@ GameObject.prototype.destroy = function () {
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-function CharacterStats(childAttributes) {
-  GameObject.call(this, childAttributes)
-  this.healthPoints = childAttributes.healthPoints;
-
+// function CharacterStats(childAttributes) {
+//   GameObject.call(this, childAttributes)
+//   this.healthPoints = childAttributes.healthPoints;
+// }
+// CharacterStats.prototype = Object.create(GameObject.prototype)
+// CharacterStats.prototype.takeDamage = function () {
+//   return `${this.name} took damage`
+// }
+class CharacterStats extends GameObject {
+  constructor(props) {
+    super(props)
+    this.healthPoints = props.healthPoints
+  }
+  takeDamage() {
+    return `${this.name} took damage`
+  }
 }
-CharacterStats.prototype = Object.create(GameObject.prototype)
-CharacterStats.prototype.takeDamage = function () {
-  return `${this.name} took damage`
-}
-
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
   * team
@@ -58,16 +59,27 @@ CharacterStats.prototype.takeDamage = function () {
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
-function Humanoid(moreChildAttributes) {
-  this.team = moreChildAttributes.team;
-  this.weapons = moreChildAttributes.weapons;
-  this.language = moreChildAttributes.language;
-  CharacterStats.call(this, moreChildAttributes)
-}
-Humanoid.prototype = Object.create(GameObject.prototype);
-Humanoid.prototype = Object.create(CharacterStats.prototype);
-Humanoid.prototype.greet = function () {
-  return `${this.name} offers a greeting in ${this.language}`
+// function Humanoid(moreChildAttributes) {
+//   this.team = moreChildAttributes.team;
+//   this.weapons = moreChildAttributes.weapons;
+//   this.language = moreChildAttributes.language;
+//   CharacterStats.call(this, moreChildAttributes)
+// }
+// Humanoid.prototype = Object.create(GameObject.prototype);
+// Humanoid.prototype = Object.create(CharacterStats.prototype);
+// Humanoid.prototype.greet = function () {
+//   return `${this.name} offers a greeting in ${this.language}`
+// }
+class Humanoid extends CharacterStats {
+  constructor(props){
+    super(props)
+    this.team = props.team;
+    this.weapons = props.weapons;
+    this.language = props.language;
+  }
+  greet(){
+    return `${this.name} offers a greeting in ${this.language}`
+  }
 }
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -138,9 +150,3 @@ console.log(archer.language); // Elvish
 console.log(archer.greet()); // Lilith offers a greeting in Elvish.
 console.log(mage.takeDamage()); // Bruce took damage.
 console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-
-
-  // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-  // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-  // * Create two new objects, one a villain and one a hero and fight it out with methods!
