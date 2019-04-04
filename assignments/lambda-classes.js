@@ -96,3 +96,32 @@ const student1 = new Student({
 student1.listSubjects()
 student1.PRAssignment('Javascript IV')
 student1.sprintChallenge('Javascript IV')
+
+class ProjectManager extends Instructor {
+  constructor(props){
+    super(props)
+    this.gradClassName = props.gradClassName;
+    this.favInstructor = props.favInstructor;
+  }
+  standUp(channel){
+    console.log(`${this.name} announces to ${channel}, @channel standy times!`)
+  }
+  debugsCode(student, subject){
+    console.log(`${this.name} debugs ${student.name}'s code on ${subject}`)
+  }
+}
+
+const pm1 = new ProjectManager({
+  name: 'Kyle',
+  age: 23,
+  location: 'Salt Lake City',
+  gender: 'Male',
+  specialty: 'Mathamatics',
+  favLanguage: 'Javascript',
+  catchPhrase: `Don't forget the homies`,
+  gradClassName: 'CS1',
+  favInstructor: 'Sean'
+})
+
+pm1.standUp('WEBPT5')
+pm1.debugsCode({name: 'Priscilla'}, 'React/Redux')
